@@ -27,7 +27,7 @@ jobs:
           pdm install
       - name: generate coverage report
         run: |
-          pdm run coverage run --source=feeph.github-utils -m pytest tests/
+          pdm run coverage run --source=feeph.github_utils -m pytest tests/
           # coveralls recognizes the presence of .coverage but claims there
           # is nothing to report; creating a report in lcov format fixes that
           mkdir -p coverage
