@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# run various tests to validate the code
+#
+
+set -e
+set -u
+
+# code quality
+pdm run flake8 feeph/ examples/ tests/
+
+# code style
+# (pylint is configured to accept "less than perfect")
+pdm run pylint feeph/ examples/ tests/
+
+# validate type hints (package)
+pdm run mypy -p feeph.github-utils
+
+# validate type hints (extra files)
+# (we need to be careful since there might be no files)
+FILES=`find examples/ tests/ -name '*.py'`
+if [[ -n $FILES ]] ; then
+    pdm run mypy $FILES
+fi
+
+# Generate a coverage report in lcov format even if pytest fails due to
+# lacking coverage. The report can then be used by an IDE to indicate
+# coverage directly in your editor window. Special care must be taken
+# when working on code that isn't covered by unit tests.
+#
+# recommended extension for VS Code:
+# https://marketplace.visualstudio.com/items?itemName=markis.code-coverage
+generate_lcov() {
+    mkdir -p coverage
+    # generate coverage report in lcov and HTML format
+    pdm run coverage-lcov --output_file_path=coverage/lcov.info
+    pdm run coverage html
+}
+
+trap generate_lcov EXIT
+pdm run pytest --cov=feeph.github-utils --cov-report=term-missing --no-header --quiet tests/
+
+tox
+
+echo "----------------------------------------------------------------------"
+echo "If you reached this far you passed. Congratulations!"
+echo "----------------------------------------------------------------------"
