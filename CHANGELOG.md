@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/feeph/github-utils-python/compare/v0.1.0...v0.1.1) (2024-08-20)
+
+
+### Bug Fixes
+
+* provide a useful error message if the encryption key is unavailable ([#3](https://github.com/feeph/github-utils-python/issues/3)) ([2950922](https://github.com/feeph/github-utils-python/commit/2950922652a50ca41fa797c8ca56ba4f67177913))
+
 ## 0.1.0 (2024-08-20)
 
 
