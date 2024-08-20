@@ -2,8 +2,10 @@
 
 import base64
 import logging
+import sys
 
 import requests
+
 from feeph.github_utils.api.secrets import EncryptionKey, encrypt_secret
 
 LH = logging.getLogger('feeph.github')
@@ -12,6 +14,8 @@ LH = logging.getLogger('feeph.github')
 class Actions:
 
     def __init__(self, owner: str, repository: str, github_pat: str):
+        self.owner = owner
+        self.repository = repository
         self.base_url = f"https://api.github.com/repos/{owner}/{repository}"
         self.enc_key: EncryptionKey | None = None
         self.session = requests.Session()
@@ -23,11 +27,16 @@ class Actions:
 
     def get_encryption_key(self) -> EncryptionKey:
         # https://docs.github.com/en/rest/actions/secrets?apiVersion=2022-11-28#get-a-repository-public-key
-        response = self.session.get(f"{self.base_url}/actions/secrets/public-key")
-        key_id = response.json()['key_id']
-        key    = base64.b64decode(response.json()['key'])
-        LH.debug("Using KeyID %s to encrypt the GitHub Actions/Environments secrets.", key_id)
-        return EncryptionKey(key_id=key_id, key=key)
+        try:
+            response = self.session.get(f"{self.base_url}/actions/secrets/public-key")
+            key_id = response.json()['key_id']
+            key    = base64.b64decode(response.json()['key'])
+            LH.debug("Using KeyID %s to encrypt the GitHub Actions secrets.", key_id)
+            return EncryptionKey(key_id=key_id, key=key)
+        except KeyError:
+            LH.error("Unable to obtain GitHub Actions encryption key for repository '%s/%s'.", self.owner, self.repository)
+            LH.error("Please validate your configuration to make sure it exists and you have the required permissions.")
+            sys.exit(1)
 
     def update_secret(self, name: str, value: str) -> tuple[bool, str | None]:
         """
