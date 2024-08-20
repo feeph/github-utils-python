@@ -18,7 +18,7 @@
 #     nastiness sticking out prominently.
 
 [project]
-name = "feeph.github-utils"
+name = "feeph.github_utils"
 version = "0.0.0"
 description = "various GitHub related utilities"
 authors = [
@@ -92,6 +92,8 @@ source-includes = ["tests/"]
 
 [tool.pdm.dev-dependencies]
 dev = [
+    "types-PyYAML~=6.0",
+    "types-requests~=2.32",
 ]
 tools = [
     "autopep8      ~= 2.2",

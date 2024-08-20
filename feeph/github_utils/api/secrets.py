@@ -19,7 +19,7 @@ import nacl.secret
 @define(frozen=True)
 class EncryptionKey:
     key_id: str
-    key: str
+    key: bytes
 
 
 @define(frozen=True)

@@ -28,6 +28,13 @@ It must be installed from TestPyPI.
 pipx install --index-url=https://test.pypi.org/simple/ feeph.github_utils
 ```
 
+## GitHub Personal Access Token
+
+The utilities in this repository require a Personal Access Token in order
+to be allowed to talk to the GitHub API. The easiest way to acquire this
+token is to install the [GitHub Command Line utilities](https://cli.github.com)
+and use `gh auth login`.
+
 ## Bugs & Features
 
 Please submit bugs and request features on the [issue tracker](https://github.com/feeph/github-utils-python/issues).

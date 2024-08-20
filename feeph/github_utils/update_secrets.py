@@ -7,46 +7,7 @@ usage:
   update_github-secrets
   update_github-secrets -c config/config.yaml -s config/secrets.yaml
   update_github-secrets -h
-
-This script has been written because
-  - updating the secrets using GitHub CLI ('gh secret ...') is possible
-    only at the repository and organizational level. Managing secrets in
-    environments is not possible.
-  - updating the secrets using the low level API('gh api ...') is possible
-    but annoying, because it's not possible to create-or-update a secret
-    using a single command. You must know if the secret already exists and
-    act accordingly.
 """
-#
-# This scripts expects 2 config file with the following format:
-#
-# config.yaml
-# -------------------------------------------------------------------------
-# ---
-# - owner: feeph
-#   repository: libtesta1-python
-#   environments:
-#     publish-to-pypi:
-#       secrets:
-#         - secret1
-#     publish-to-testpypi:
-#       secrets:
-#         - secret1
-# - owner: feeph
-#   repository: libtesta2-python
-#   environments:
-#     publish-to-testpypi:
-#       secrets:
-#         - secret1
-#         - secret2
-# -------------------------------------------------------------------------
-#
-# secrets.yaml
-# -------------------------------------------------------------------------
-# ---
-# secret1: "value1"
-# secret2: "value2"
-# -------------------------------------------------------------------------
 
 import argparse
 import logging
@@ -121,7 +82,6 @@ def update_ghe(ghe: feeph.github_utils.Environments, config: list[str], secrets:
                 LH.warning("Failed to update GitHub Environment secret '%s' in environment '%s': %s", secret_name, environment, error_msg)
     except (AttributeError, TypeError) as e:
         LH.debug("Unable to process GitHub Environment config for environment '%s': %s", environment, e)
-
 
 
 def main():
