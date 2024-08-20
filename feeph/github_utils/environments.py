@@ -4,8 +4,7 @@ import base64
 import logging
 
 import requests
-from feeph.github_utils.api.secrets import encrypt_secret
-from feeph.github_utils.api.encryption_key import EncryptionKey
+from feeph.github_utils.api.secrets import EncryptionKey, encrypt_secret
 
 LH = logging.getLogger('feeph.github')
 

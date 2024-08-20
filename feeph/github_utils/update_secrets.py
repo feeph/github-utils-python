@@ -123,7 +123,6 @@ def update_ghe(ghe: feeph.github_utils.Environments, config: list[str], secrets:
         LH.debug("Unable to process GitHub Environment config for environment '%s': %s", environment, e)
 
 
-
 def main():
     logging.basicConfig(format='%(levelname).1s: %(message)s', level=logging.INFO)
 
